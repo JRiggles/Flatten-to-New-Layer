@@ -7,7 +7,7 @@
 - Initial Release!
 
 ##
-This Aseprite extension allows you flatten the layers in a sprite to a new layer, preserving any existing layers.
+This Aseprite extension allows you to flatten the layers in a sprite to a new layer, preserving any existing layers.
 
 You can also choose to flatten only visible layers to a new layer.
 
