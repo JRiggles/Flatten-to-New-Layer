@@ -1,5 +1,7 @@
 # Flatten to New Layer
 
+<img src="./screenshots/FNL Cover Image.png" />
+
 #### An Aseprite extension
 *current release: [v1.0.0](https://sudo-whoami.itch.io/flatten-to-new-layer)*
 
