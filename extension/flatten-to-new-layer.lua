@@ -1,6 +1,6 @@
 --[[
 MIT LICENSE
-Copyright © 2024 John Riggles
+Copyright © 2024-26 John Riggles
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -25,23 +25,46 @@ local function main(visibleOnly)
   app.transaction( -- set up a transaction to make this action undoable
     function()
         local sprite = app.sprite
-        local currentLayer = app.layer
+        local selectedLayers = app.range.layers
+        local layersToFlatten = {}
+        local seenLayers = {}
         local count = 0
 
-        for i, layer in ipairs(sprite.layers) do
-          if visibleOnly == false or layer.isVisible then
-            app.layer = layer -- set active layer
-            app.command:DuplicateLayer { target = layer } -- duplicate active layer
-            app.layer.stackIndex = #sprite.layers -- move the newest layer to the top of the stack
-            count = count + 1
+        if #selectedLayers == 0 then
+          selectedLayers = { app.layer } -- fallback to current layer if no layers are selected
+        end
+
+        local function collectLayers(layer, ancestorsVisible)
+          local isVisible = ancestorsVisible and layer.isVisible
+          if layer.isGroup then
+            for _, child in ipairs(layer.layers) do
+              collectLayers(child, isVisible)
+            end
+          elseif (visibleOnly == false or isVisible) and not seenLayers[layer] then
+            seenLayers[layer] = true
+            table.insert(layersToFlatten, layer)
           end
         end
+
+        for _, layer in ipairs(selectedLayers) do
+          collectLayers(layer, true)
+        end
+
+        for _, layer in ipairs(layersToFlatten) do
+          app.layer = layer -- set active layer
+          app.command:DuplicateLayer { target = layer } -- duplicate active layer
+          app.layer.stackIndex = #sprite.layers -- move the newest layer to the top of the stack
+          count = count + 1
+        end
+
         -- merge the copied layers into a single layer
         -- the number of merges will always be 1 less than the total number of original layers
         for i = 1, count - 1 do
           app.command.MergeDownLayer()
         end
-        app.layer.name = "Flattened"
+        if count > 0 then
+          app.layer.name = "Flattened"
+        end
     end
   )
   app.refresh()

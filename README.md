@@ -3,10 +3,11 @@
 <img src="./screenshots/FNL Cover Image.png" />
 
 #### An Aseprite extension
-*current release: [v1.0.0](https://sudo-whoami.itch.io/flatten-to-new-layer)*
+*current release: [v1.2.0](https://sudo-whoami.itch.io/flatten-to-new-layer)*
 
 ## Latest Changes
-- Initial Release!
+- Fix behavior when flattening layer groups; thanks to NickDefo for the fix! [PR#1](https://github.com/JRiggles/Flatten-to-New-Layer/pull/1)
+- Fix layer selection behavior so flattening is more consistent and intuitive
 
 ##
 This Aseprite extension allows you to flatten the layers in a sprite to a new layer, preserving any existing layers.
@@ -15,7 +16,7 @@ You can also choose to flatten only visible layers to a new layer.
 
 ### Requirements
 
-This extension has been tested on both Windows and Mac OS (specifically, Windows 11 and Mac OS Sonoma 14.3.1)
+This extension has been tested on both Windows and Mac OS (specifically, Windows 11 and Mac OS Sonoma 26)
 
 It is intended to run on Aseprite version 1.3 or later and requires API version 1.3-rc5 (as long as you have the latest version of Aseprite, you should be fine!)
 
