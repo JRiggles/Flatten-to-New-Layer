@@ -29,7 +29,7 @@ local function main(visibleOnly)
         local count = 0
 
         for i, layer in ipairs(sprite.layers) do
-          if visibleOnly == false or layer.isVisible then
+          if (visibleOnly == false or layer.isVisible) and not layer.isGroup then
             app.layer = layer -- set active layer
             app.command:DuplicateLayer { target = layer } -- duplicate active layer
             app.layer.stackIndex = #sprite.layers -- move the newest layer to the top of the stack
